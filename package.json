@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "vite-plus": "^0.1.22"
+  },
+  "packageManager": "pnpm@11.1.3"
+}
