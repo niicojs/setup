@@ -1,6 +1,10 @@
 import { existsSync, rmSync } from 'node:fs';
 
+import { $ } from 'dax';
+
 console.log('Launch clean script...');
+
+console.log('Removing old pnpm store...');
 
 const userHome = process.env.HOME || process.env.USERPROFILE;
 
@@ -18,5 +22,9 @@ for (const path of to_remove) {
     rmSync(path, { recursive: true, force: true });
   }
 }
+
+console.log('Update winget apps...');
+
+await $`winget upgrade --all`;
 
 console.log('Done!');

@@ -23,24 +23,56 @@ Set-ItemProperty $key Hidden 1
 Set-ItemProperty $key HideFileExt 0
 Set-ItemProperty $key ShowSuperHidden 1
 
+# Explorer: Disable creating Thumbs.db files on network volumes: Enable: 0, Disable: 1
+Set-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" "DisableThumbnailsOnNetworkFolders" 1
+Set-ItemProperty "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" "TaskbarDa" 0 # Widgets
+
+
+# Uninstall Bing Finance
+Get-AppxPackage "Microsoft.BingFinance" -AllUsers | Remove-AppxPackage -AllUsers
+Get-AppXProvisionedPackage -Online | Where DisplayName -like "Microsoft.BingFinance" | Remove-AppxProvisionedPackage -Online -AllUsers | Out-Null
+
+# Uninstall Bing News
+Get-AppxPackage "Microsoft.BingNews" -AllUsers | Remove-AppxPackage -AllUsers
+Get-AppXProvisionedPackage -Online | Where DisplayName -like "Microsoft.BingNews" | Remove-AppxProvisionedPackage -Online -AllUsers | Out-Null
+
+# Uninstall Bing Sports
+Get-AppxPackage "Microsoft.BingSports" -AllUsers | Remove-AppxPackage -AllUsers
+Get-AppXProvisionedPackage -Online | Where DisplayName -like "Microsoft.BingSports" | Remove-AppxProvisionedPackage -Online -AllUsers | Out-Null
+
+# Uninstall Bing Weather
+Get-AppxPackage "Microsoft.BingWeather" -AllUsers | Remove-AppxPackage -AllUsers
+Get-AppXProvisionedPackage -Online | Where DisplayName -like "Microsoft.BingWeather" | Remove-AppxProvisionedPackage -Online -AllUsers | Out-Null
+
+# Uninstall Get Office, and it's "Get Office365" notifications
+Get-AppxPackage "Microsoft.MicrosoftOfficeHub" -AllUsers | Remove-AppxPackage -AllUsers
+Get-AppXProvisionedPackage -Online | Where DisplayName -like "Microsoft.MicrosoftOfficeHub" | Remove-AppxProvisionedPackage -Online -AllUsers | Out-Null
+
+
+
 # apps
 
-winget install --id=7zip.7zip
-winget install --id=Microsoft.PowerShell
-winget install --id=Google.Chrome.Beta
-winget install --id=Microsoft.VisualStudioCode.Insiders
-winget install --id=Starship.Starship
-winget install --id=dotPDN.PaintDotNet
-winget install --id=Telegram.TelegramDesktop
-winget install --id=SST.OpenCodeDesktop
-winget install --id=Git.Git
-winget install --id=GitHub.GitHubDesktop 
-winget install --id=Tailscale.Tailscale
-winget install --id=Microsoft.PowerToys
+winget install -e --id Microsoft.WindowsTerminal
+winget install -e --id=7zip.7zip
+winget install -e --id=Microsoft.PowerShell
+winget install -e --id=Google.Chrome.Beta
+winget install -e --id=Microsoft.VisualStudioCode.Insiders
+winget install -e --id=Starship.Starship
+winget install -e --id=dotPDN.PaintDotNet
+winget install -e --id=Telegram.TelegramDesktop
+winget install -e --id=SST.OpenCodeDesktop
+winget install -e --id=Git.Git
+winget install -e --id=GitHub.GitHubDesktop 
+winget install -e --id=Tailscale.Tailscale
+winget install -e --id=Microsoft.PowerToys
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
 
 git config --global core.autocrlf true
 
+vp i
+
 # script
-bun 02-install.js
+node ./02-install.ts
+
+Install-WindowsUpdate -acceptEula
